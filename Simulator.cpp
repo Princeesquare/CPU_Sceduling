@@ -22,4 +22,4 @@ struct Algorithm
     int method;
     int pModes; // Preemptive mode
     int n;     // time quantum for Round-Robin Scheduling
-} alg = { 0, 0, 0 };
+} alg = { 4, 2, 2 };
