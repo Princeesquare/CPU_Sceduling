@@ -25,7 +25,13 @@ struct Algorithm
 } alg = { 4, 2, 2 };
 
 // App function declarations
-
+void validateParams(int, char**);
+void getInitialProcesses(const string& filename);
+void loadMainMenu();
+void handleSchedulingMethod();
+void handlePMode();
+void handleShowResult();
+void handleEndProgram();
 
 // Linked list function declarations
 struct Process* createProcess(int, int, int, int);
