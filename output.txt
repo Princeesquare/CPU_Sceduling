@@ -1,0 +1,20 @@
+
+Scheduling Method: First Come First Served
+Process Waiting Times:
+
+P0: 0 ms
+P0: 4 ms
+P0: 4 ms
+P0: 4 ms
+P0: 4 ms
+Average waiting time: 3.2 ms
+
+Scheduling Method: Shortest Job First
+Process Waiting Times:
+
+P0: 4 ms
+P0: 4 ms
+P0: 4 ms
+P0: 4 ms
+P0: 4 ms
+Average waiting time: 3.2 ms
