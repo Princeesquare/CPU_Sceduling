@@ -64,3 +64,20 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
             currentTime++;
         }
     }
+    int totalWaiting = 0;
+    for (int i = 0; i < SIZE; i++) {
+        totalWaiting += processes[i].wTime;
+    }
+
+    double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
+
+    std::ofstream outputFile("output.txt", std::ios::app);
+    outputFile << "\nScheduling Method: Round Robin\nProcess Waiting Times:\n";
+
+    for (int i = 0; i < SIZE; i++) {
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+    }
+
+    outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
+    std::cout << "\nOutput is stored in the output file\n";
+}
