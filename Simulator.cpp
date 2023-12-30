@@ -98,12 +98,37 @@ void FCFS(std::vector<Process>& processes) {
     double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
 
     std::ofstream outputFile("output.txt", std::ios::app);
-    outputFile << "\nScheduling Method: First Come First Served\nProcess Waiting Times:\n";
+    outputFile << "\nScheduling Method: First Come First Serve\nProcess Waiting Times:\n";
 
     for (int i = 0; i < SIZE; i++) {
         outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
     }
 
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
-    std::cout << "\nResult Saved to Output.txt\n";
+    std::cout << "\nResult Saved to Output.txt file\n";
+}
+
+void SJF(std::vector<Process>& processes) {
+    std::sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
+        return a.bTime < b.bTime;
+        });
+
+    int totalWaiting = 0;
+
+    for (int i = 1; i < SIZE; i++) {
+        processes[i].wTime = processes[i - 1].bTime + processes[i - 1].aTime + processes[i - 1].wTime;
+        totalWaiting += processes[i].wTime;
+    }
+
+    double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
+
+    std::ofstream outputFile("output.txt", std::ios::app);
+    outputFile << "\nScheduling Method: Shortest Job First\nProcess Waiting Times:\n";
+
+    for (int i = 0; i < SIZE; i++) {
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+    }
+
+    outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
+    std::cout << "\nResult Saved to Output.txt file\n";
 }
