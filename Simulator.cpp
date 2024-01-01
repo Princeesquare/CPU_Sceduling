@@ -134,7 +134,7 @@ void SJF(std::vector<Process>& processes) {
 }
 
 void PriorityScheduling(std::vector<Process> & processes) {
-    std::sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
+    std::sort(processes.begin(), processes.end(), [](const Process & a, const Process & b) {
         return a.p < b.p;
         });
 
@@ -157,3 +157,44 @@ void PriorityScheduling(std::vector<Process> & processes) {
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
     std::cout << "\nResult Saved to Output.txt file\n";
 }
+int main(int argc, char** argv) {
+    std::vector<Process> processes(SIZE);
+
+    int i = 0;
+    int mode = 0;
+    int option = 0;
+    int option2 = 0;
+    int quantumTime = 0;
+
+    std::ifstream inputFile("input.txt");
+    if (!inputFile.is_open()) {
+        std::cerr << "Error opening input file\n";
+        return 1;
+    }
+
+    while (inputFile >> processes[i].bTime >> processes[i].aTime >> processes[i].p) {
+        processes[i].Name = i + 1;
+        i++;
+    }
+
+    inputFile.close();
+
+    std::ofstream outputFile("output.txt", std::ios::trunc);
+
+    std::cout << " CPU Scheduler Simulator\n";
+
+    std::ifstream resultFile; // Declare here
+
+    do {
+        if (mode == 0)
+            std::cout << "\nMODE : Preemptive\n\n";
+        else if (mode == 1)
+            std::cout << "\nMODE : Non-Preemptive\n";
+
+        std::cout << "1) Scheduling Method (None)\n";
+        std::cout << "2) Preemptive Mode\n";
+        std::cout << "3) Non-Preemptive Mode\n";
+        std::cout << "4) Show Result\n";
+        std::cout << "5) End Program\n";
+        std::cout << "Option> ";
+        std::cin >> option;
