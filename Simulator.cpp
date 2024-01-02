@@ -198,3 +198,19 @@ int main(int argc, char** argv) {
         std::cout << "5) End Program\n";
         std::cout << "Option> ";
         std::cin >> option;
+
+        switch (option) {
+        case 1:
+            if (mode == 0)
+                std::cout << "\n\n\n\n MODE : Preemptive\n";
+            else if (mode == 1)
+                std::cout << "\nMODE : Non-Preemptive\n";
+
+            std::cout << "1) First Come, First Served Scheduling\n";
+            std::cout << "2) Shortest-Job-First Scheduling\n";
+            std::cout << "3) Priority Scheduling\n";
+            std::cout << "4) Round-Robin Scheduling\n";
+            std::cout << "5) Back\n";
+            std::cout << "\n\n";
+            std::cout << "Option> ";
+            std::cin >> option2;
