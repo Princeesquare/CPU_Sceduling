@@ -214,3 +214,5 @@ int main(int argc, char** argv) {
             std::cout << "\n\n";
             std::cout << "Option> ";
             std::cin >> option2;
+        }
+    }
