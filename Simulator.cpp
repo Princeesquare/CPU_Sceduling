@@ -14,50 +14,53 @@ struct Process {
     int priority;     
 };
 
-void InsertQ(std::vector<Process>& queue, const Process& element) {
-    queue.push_back(element);
+void InsertQ(Process* queue, int& rear, const Process& element) {
+    queue[rear] = element;
+    rear++;
 }
 
-void DelQ(std::vector<Process>& queue) {
-    if (!queue.empty()) {
-        queue.erase(queue.begin());
+void DelQ(Process* queue, int& front, int& rear) {
+    if (front < rear) {
+        front++;
     }
 }
 
-Process InsertFront(const std::vector<Process>& queue) {
-    return queue.front();
+Process InsertFront(const Process* queue, int front) {
+    return queue[front];
 }
 
-bool isEmptyQ(const std::vector<Process>& queue) {
-    return queue.empty();
+bool isEmptyQ(int front, int rear) {
+    return front == rear;
 }
 
-void bubbleSort(std::vector<Process>& processes, bool compare(const Process&, const Process&)) {
-    int n = processes.size();
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (compare(processes[j], processes[j + 1])) {
-                std::swap(processes[j], processes[j + 1]);
+void bubbleSort(Process* processes, int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (processes[j].Arrival_Time > processes[j + 1].Arrival_Time) {
+                Process temp = processes[j];
+                processes[j] = processes[j + 1];
+                processes[j + 1] = temp;
             }
         }
     }
 }
 
-void RoundRobin(std::vector<Process>& processes, int quantumTime) {
-    std::vector<Process> processQueue;
+void RoundRobin(Process* processes, int quantumTime) {
+    Process processQueue[SIZE];
+    int front = 0, rear = 0;
     int currentTime = 0;
 
-    while (!isEmptyQ(processQueue) || currentTime < SIZE) {
+    while (!isEmptyQ(front, rear) || currentTime < SIZE) {
         while (currentTime < SIZE && processes[currentTime].Arrival_Time <= currentTime) {
-            InsertQ(processQueue, processes[currentTime]);
+            InsertQ(processQueue, rear, processes[currentTime]);
             currentTime++;
         }
 
-        if (!isEmptyQ(processQueue)) {
-            Process currentProcess = InsertFront(processQueue);
-            DelQ(processQueue);
+        if (!isEmptyQ(front, rear)) {
+            Process currentProcess = InsertFront(processQueue, front);
+            DelQ(processQueue, front, rear);
 
-            int executionTime = std::min(quantumTime, currentProcess.Burst_Time);
+            int executionTime = (quantumTime < currentProcess.Burst_Time) ? quantumTime : currentProcess.Burst_Time;
             currentProcess.Burst_Time -= executionTime;
 
             for (int i = currentTime; i < currentTime + executionTime; i++) {
@@ -67,13 +70,14 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
             currentTime += executionTime;
 
             if (currentProcess.Burst_Time > 0) {
-                InsertQ(processQueue, currentProcess);
+                InsertQ(processQueue, rear, currentProcess);
             }
         }
         else {
             currentTime++;
         }
     }
+
     int totalWaiting = 0;
     for (int i = 0; i < SIZE; i++) {
         totalWaiting += processes[i].Waiting_Time;
@@ -93,10 +97,8 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
 }
 
 
-void FCFS(std::vector<Process>& processes) {
-    bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.Arrival_Time < b.Arrival_Time;
-        });
+void FCFS(Process* processes, int size) {
+    bubbleSort(processes, size);
 
     int totalWaiting = 0;
 
@@ -118,10 +120,8 @@ void FCFS(std::vector<Process>& processes) {
     std::cout << "\nResult Saved to Output.txt file\n";
 }
 
-void SJF(std::vector<Process>& processes) {
-    bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.Burst_Time < b.Burst_Time;
-        });
+void SJF(Process* processes, int size) {
+    bubbleSort(processes, size);
 
     int totalWaiting = 0;
 
@@ -143,10 +143,8 @@ void SJF(std::vector<Process>& processes) {
     std::cout << "\nResult Saved to Output.txt file\n";
 }
 
-void priorityScheduling(std::vector<Process> & processes) {
-    bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.priority < b.priority;
-        });
+void priorityScheduling(Process* processes, int size) {
+    bubbleSort(processes, size);
 
     int totalWaiting = 0;
 
@@ -168,7 +166,7 @@ void priorityScheduling(std::vector<Process> & processes) {
     std::cout << "\nResult Saved to Output.txt file\n";
 }
 int main(int argc, char** argv) {
-    std::vector<Process> processes(SIZE);
+    Process processes[SIZE];
 
     int i = 0;
     int mode = 0;
@@ -228,13 +226,13 @@ int main(int argc, char** argv) {
 
             switch (option2) {
             case 1:
-                FCFS(processes);
+                FCFS(processes, SIZE);
                 break;
             case 2:
-                SJF(processes);
+                SJF(processes, SIZE);
                 break;
             case 3:
-                priorityScheduling(processes);
+                priorityScheduling(processes, SIZE);
                 break;
             case 4:
                 std::cout << "Enter Quantum Time: ";
