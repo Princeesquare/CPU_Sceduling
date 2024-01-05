@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
+//#include <vector>
 
 
 #define SIZE 5
@@ -8,28 +8,27 @@
 
 struct Process {
     int Name;
-    int bTime; // Burst Time
-    int aTime; // Arrival Time
-    int wTime; // Waiting Time
-    int p;     // Priority
-    int sr;    // Show Result
+    int Burst_Time;
+    int Arrival_Time; 
+    int Waiting_Time;
+    int priority;     
 };
 
-void enqueue(std::vector<Process>& queue, const Process& element) {
+void InsertQ(std::vector<Process>& queue, const Process& element) {
     queue.push_back(element);
 }
 
-void dequeue(std::vector<Process>& queue) {
+void DelQ(std::vector<Process>& queue) {
     if (!queue.empty()) {
         queue.erase(queue.begin());
     }
 }
 
-Process front(const std::vector<Process>& queue) {
+Process InsertFront(const std::vector<Process>& queue) {
     return queue.front();
 }
 
-bool isEmpty(const std::vector<Process>& queue) {
+bool isEmptyQ(const std::vector<Process>& queue) {
     return queue.empty();
 }
 
@@ -48,27 +47,27 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
     std::vector<Process> processQueue;
     int currentTime = 0;
 
-    while (!isEmpty(processQueue) || currentTime < SIZE) {
-        while (currentTime < SIZE && processes[currentTime].aTime <= currentTime) {
-            enqueue(processQueue, processes[currentTime]);
+    while (!isEmptyQ(processQueue) || currentTime < SIZE) {
+        while (currentTime < SIZE && processes[currentTime].Arrival_Time <= currentTime) {
+            InsertQ(processQueue, processes[currentTime]);
             currentTime++;
         }
 
-        if (!isEmpty(processQueue)) {
-            Process currentProcess = front(processQueue);
-            dequeue(processQueue);
+        if (!isEmptyQ(processQueue)) {
+            Process currentProcess = InsertFront(processQueue);
+            DelQ(processQueue);
 
-            int executionTime = std::min(quantumTime, currentProcess.bTime);
-            currentProcess.bTime -= executionTime;
+            int executionTime = std::min(quantumTime, currentProcess.Burst_Time);
+            currentProcess.Burst_Time -= executionTime;
 
             for (int i = currentTime; i < currentTime + executionTime; i++) {
-                processes[i].wTime += executionTime;
+                processes[i].Waiting_Time += executionTime;
             }
 
             currentTime += executionTime;
 
-            if (currentProcess.bTime > 0) {
-                enqueue(processQueue, currentProcess);
+            if (currentProcess.Burst_Time > 0) {
+                InsertQ(processQueue, currentProcess);
             }
         }
         else {
@@ -77,7 +76,7 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
     }
     int totalWaiting = 0;
     for (int i = 0; i < SIZE; i++) {
-        totalWaiting += processes[i].wTime;
+        totalWaiting += processes[i].Waiting_Time;
     }
 
     double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
@@ -86,7 +85,7 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
     outputFile << "\nScheduling Method: Round Robin\nProcess Waiting Times:\n";
 
     for (int i = 0; i < SIZE; i++) {
-        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].Waiting_Time << " ms";
     }
 
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
@@ -96,14 +95,14 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
 
 void FCFS(std::vector<Process>& processes) {
     bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.aTime < b.aTime;
+        return a.Arrival_Time < b.Arrival_Time;
         });
 
     int totalWaiting = 0;
 
     for (int i = 1; i < SIZE; i++) {
-        processes[i].wTime = processes[i - 1].bTime + processes[i - 1].aTime + processes[i - 1].wTime - processes[i].aTime;
-        totalWaiting += processes[i].wTime;
+        processes[i].Waiting_Time = processes[i - 1].Burst_Time + processes[i - 1].Arrival_Time + processes[i - 1].Waiting_Time - processes[i].Arrival_Time;
+        totalWaiting += processes[i].Waiting_Time;
     }
 
     double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
@@ -112,7 +111,7 @@ void FCFS(std::vector<Process>& processes) {
     outputFile << "\nScheduling Method: First Come First Serve\nProcess Waiting Times:\n";
 
     for (int i = 0; i < SIZE; i++) {
-        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].Waiting_Time << " ms";
     }
 
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
@@ -121,14 +120,14 @@ void FCFS(std::vector<Process>& processes) {
 
 void SJF(std::vector<Process>& processes) {
     bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.bTime < b.bTime;
+        return a.Burst_Time < b.Burst_Time;
         });
 
     int totalWaiting = 0;
 
     for (int i = 1; i < SIZE; i++) {
-        processes[i].wTime = processes[i - 1].bTime + processes[i - 1].aTime + processes[i - 1].wTime;
-        totalWaiting += processes[i].wTime;
+        processes[i].Waiting_Time = processes[i - 1].Burst_Time + processes[i - 1].Arrival_Time + processes[i - 1].Waiting_Time;
+        totalWaiting += processes[i].Waiting_Time;
     }
 
     double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
@@ -137,32 +136,32 @@ void SJF(std::vector<Process>& processes) {
     outputFile << "\nScheduling Method: Shortest Job First\nProcess Waiting Times:\n";
 
     for (int i = 0; i < SIZE; i++) {
-        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].Waiting_Time << " ms";
     }
 
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
     std::cout << "\nResult Saved to Output.txt file\n";
 }
 
-void PriorityScheduling(std::vector<Process> & processes) {
+void priorityScheduling(std::vector<Process> & processes) {
     bubbleSort(processes, [](const Process& a, const Process& b) {
-        return a.p < b.p;
+        return a.priority < b.priority;
         });
 
     int totalWaiting = 0;
 
     for (int i = 1; i < SIZE; i++) {
-        processes[i].wTime = processes[i - 1].bTime + processes[i - 1].aTime + processes[i - 1].wTime;
-        totalWaiting += processes[i].wTime;
+        processes[i].Waiting_Time = processes[i - 1].Burst_Time + processes[i - 1].Arrival_Time + processes[i - 1].Waiting_Time;
+        totalWaiting += processes[i].Waiting_Time;
     }
 
     double averageWaiting = static_cast<double>(totalWaiting) / SIZE;
 
     std::ofstream outputFile("output.txt", std::ios::app);
-    outputFile << "\nScheduling Method: Priority Scheduling\nProcess Waiting Times:\n";
+    outputFile << "\nScheduling Method: priority Scheduling\nProcess Waiting Times:\n";
 
     for (int i = 0; i < SIZE; i++) {
-        outputFile << "\nP" << processes[i].Name << ": " << processes[i].wTime << " ms";
+        outputFile << "\nP" << processes[i].Name << ": " << processes[i].Waiting_Time << " ms";
     }
 
     outputFile << "\nAverage waiting time: " << averageWaiting << " ms\n";
@@ -183,7 +182,7 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    while (inputFile >> processes[i].bTime >> processes[i].aTime >> processes[i].p) {
+    while (inputFile >> processes[i].Burst_Time >> processes[i].Arrival_Time >> processes[i].priority) {
         processes[i].Name = i + 1;
         i++; 
     }
@@ -219,7 +218,7 @@ int main(int argc, char** argv) {
 
             std::cout << "1. First Come First Serve Method\n";
             std::cout << "2. Shortest Job First Method\n";
-            std::cout << "3. Priority Scheduling\n";
+            std::cout << "3. priority Scheduling\n";
             std::cout << "4. Round-Robin Scheduling\n";
             std::cout << "5. Back\n";
             std::cout << "\n\n";
@@ -235,7 +234,7 @@ int main(int argc, char** argv) {
                 SJF(processes);
                 break;
             case 3:
-                PriorityScheduling(processes);
+                priorityScheduling(processes);
                 break;
             case 4:
                 std::cout << "Enter Quantum Time: ";
