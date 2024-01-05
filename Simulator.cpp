@@ -237,3 +237,27 @@ int main(int argc, char** argv) {
                 std::cout << "Invalid Option! Please Choose From 1 - 5\n";
                 break;
             }
+            break;
+        case 2:
+            mode = 0;
+            break;
+        case 3:
+            mode = 1;
+            break;
+        case 4:
+            resultFile.open("output.txt");
+            std::cout << resultFile.rdbuf();
+            resultFile.close();
+            break;
+        case 5:
+            break;
+        default:
+            std::cout << "\nInvalid Option! Please Choose From 1 - 5 \n";
+            break;
+        }
+    } while (option != 5);
+
+    return 0;
+}
+
+
