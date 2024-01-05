@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <algorithm>
+
 
 #define SIZE 5
 #define LINE_MAX 1024
@@ -31,6 +31,17 @@ Process front(const std::vector<Process>& queue) {
 
 bool isEmpty(const std::vector<Process>& queue) {
     return queue.empty();
+}
+
+void bubbleSort(std::vector<Process>& processes, bool compare(const Process&, const Process&)) {
+    int n = processes.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (compare(processes[j], processes[j + 1])) {
+                std::swap(processes[j], processes[j + 1]);
+            }
+        }
+    }
 }
 
 void RoundRobin(std::vector<Process>& processes, int quantumTime) {
@@ -84,7 +95,7 @@ void RoundRobin(std::vector<Process>& processes, int quantumTime) {
 
 
 void FCFS(std::vector<Process>& processes) {
-    std::sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
+    bubbleSort(processes, [](const Process& a, const Process& b) {
         return a.aTime < b.aTime;
         });
 
@@ -109,7 +120,7 @@ void FCFS(std::vector<Process>& processes) {
 }
 
 void SJF(std::vector<Process>& processes) {
-    std::sort(processes.begin(), processes.end(), [](const Process& a, const Process& b) {
+    bubbleSort(processes, [](const Process& a, const Process& b) {
         return a.bTime < b.bTime;
         });
 
@@ -134,7 +145,7 @@ void SJF(std::vector<Process>& processes) {
 }
 
 void PriorityScheduling(std::vector<Process> & processes) {
-    std::sort(processes.begin(), processes.end(), [](const Process & a, const Process & b) {
+    bubbleSort(processes, [](const Process& a, const Process& b) {
         return a.p < b.p;
         });
 
@@ -181,22 +192,22 @@ int main(int argc, char** argv) {
 
     std::ofstream outputFile("output.txt", std::ios::trunc);
 
-    std::cout << " CPU Scheduler Simulator\n";
+    std::cout << " CPU Scheduling Simulator\n";
 
-    std::ifstream resultFile; // Declare here
+    std::ifstream resultFile; 
 
     do {
         if (mode == 0)
-            std::cout << "\nMODE : Preemptive\n\n";
+            std::cout << "\nPRIMITIVE MODE\n\n";
         else if (mode == 1)
-            std::cout << "\nMODE : Non-Preemptive\n";
+            std::cout << "\nNON-PRIMITIVE MODE\n";
 
-        std::cout << "1) Scheduling Method (None)\n";
-        std::cout << "2) Preemptive Mode\n";
-        std::cout << "3) Non-Preemptive Mode\n";
-        std::cout << "4) Show Result\n";
-        std::cout << "5) End Program\n";
-        std::cout << "Option> ";
+        std::cout << "1) Select Scheduling Method\n";
+        std::cout << "2) Enter Primitive Mode\n";
+        std::cout << "3) Use Non-Primitive Mode\n";
+        std::cout << "4) Display Result\n";
+        std::cout << "5) Quit\n";
+        std::cout << "Enter Option Here --> ";
         std::cin >> option;
 
         switch (option) {
