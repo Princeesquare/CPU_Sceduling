@@ -197,30 +197,29 @@ int main(int argc, char** argv) {
         if (mode == 0)
             std::cout << "\nPRIMITIVE MODE\n\n";
         else if (mode == 1)
-            std::cout << "\nNON-PRIMITIVE MODE\n";
+            std::cout << "\nNON-PRIMITIVE MODE\n\n";
 
         std::cout << "1. Select Scheduling Method\n";
         std::cout << "2. Enter Primitive Mode\n";
         std::cout << "3. Use Non-Primitive Mode\n";
         std::cout << "4. Display Result\n";
         std::cout << "5. Quit\n";
-        std::cout << "Enter Option Here --> ";
+        std::cout << "\nEnter Option Here --> ";
         std::cin >> option;
 
         switch (option) {
         case 1:
             if (mode == 0)
-                std::cout << "\n\n\n\n PRIMITIVE MODE\n";
+                std::cout << "\n\n\nPRIMITIVE MODE\n\n";
             else if (mode == 1)
-                std::cout << "\nNON-PRIMITIVE MODE\n";
+                std::cout << "\nNON-PRIMITIVE MODE\n\n";
 
             std::cout << "1. First Come First Serve Method\n";
             std::cout << "2. Shortest Job First Method\n";
             std::cout << "3. priority Scheduling\n";
             std::cout << "4. Round-Robin Scheduling\n";
             std::cout << "5. Back\n";
-            std::cout << "\n\n";
-            std::cout << "Enter Option Here --> ";
+            std::cout << "\nEnter Option Here --> ";
             std::cin >> option2;
 
 
@@ -235,14 +234,14 @@ int main(int argc, char** argv) {
                 priorityScheduling(processes, SIZE);
                 break;
             case 4:
-                std::cout << "Enter Quantum Time: ";
+                std::cout << "\nEnter Quantum Time: ";
                 std::cin >> quantumTime;
                 RoundRobin(processes, quantumTime);
                 break;
             case 5:
                 break;
             default:
-                std::cout << "Invalid Option Selected! Please Choose From 1 - 5\n";
+                std::cout << "\nInvalid Option Selected! Please Choose From 1 - 5\n";
                 break;
             }
             break;
