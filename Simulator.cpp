@@ -185,7 +185,7 @@ int main(int argc, char** argv) {
 
     while (inputFile >> processes[i].bTime >> processes[i].aTime >> processes[i].p) {
         processes[i].Name = i + 1;
-        i++;
+        i++; 
     }
 
     inputFile.close();
@@ -202,28 +202,28 @@ int main(int argc, char** argv) {
         else if (mode == 1)
             std::cout << "\nNON-PRIMITIVE MODE\n";
 
-        std::cout << "1) Select Scheduling Method\n";
-        std::cout << "2) Enter Primitive Mode\n";
-        std::cout << "3) Use Non-Primitive Mode\n";
-        std::cout << "4) Display Result\n";
-        std::cout << "5) Quit\n";
+        std::cout << "1. Select Scheduling Method\n";
+        std::cout << "2. Enter Primitive Mode\n";
+        std::cout << "3. Use Non-Primitive Mode\n";
+        std::cout << "4. Display Result\n";
+        std::cout << "5. Quit\n";
         std::cout << "Enter Option Here --> ";
         std::cin >> option;
 
         switch (option) {
         case 1:
             if (mode == 0)
-                std::cout << "\n\n\n\n MODE : Preemptive\n";
+                std::cout << "\n\n\n\n PRIMITIVE MODE\n";
             else if (mode == 1)
-                std::cout << "\nMODE : Non-Preemptive\n";
+                std::cout << "\nNON-PRIMITIVE MODE\n";
 
-            std::cout << "1) First Come, First Served Scheduling\n";
-            std::cout << "2) Shortest-Job-First Scheduling\n";
-            std::cout << "3) Priority Scheduling\n";
-            std::cout << "4) Round-Robin Scheduling\n";
-            std::cout << "5) Back\n";
+            std::cout << "1. First Come First Serve Method\n";
+            std::cout << "2. Shortest Job First Method\n";
+            std::cout << "3. Priority Scheduling\n";
+            std::cout << "4. Round-Robin Scheduling\n";
+            std::cout << "5. Back\n";
             std::cout << "\n\n";
-            std::cout << "Option> ";
+            std::cout << "Enter Option Here --> ";
             std::cin >> option2;
 
 
@@ -245,7 +245,7 @@ int main(int argc, char** argv) {
             case 5:
                 break;
             default:
-                std::cout << "Invalid Option! Please Choose From 1 - 5\n";
+                std::cout << "Invalid Option Selected! Please Choose From 1 - 5\n";
                 break;
             }
             break;
@@ -263,7 +263,7 @@ int main(int argc, char** argv) {
         case 5:
             break;
         default:
-            std::cout << "\nInvalid Option! Please Choose From 1 - 5 \n";
+            std::cout << "\nInvalid Option Selected! Please Choose From 1 - 5 \n";
             break;
         }
     } while (option != 5);
