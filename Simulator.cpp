@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-//#include <vector>
 
 
 #define SIZE 5
@@ -200,8 +199,8 @@ int main(int argc, char** argv) {
             std::cout << "\nNON-PRIMITIVE MODE\n\n";
 
         std::cout << "1. Select Scheduling Method\n";
-        std::cout << "2. Enter Primitive Mode\n";
-        std::cout << "3. Use Non-Primitive Mode\n";
+        std::cout << "2. Enter Preemptive Mode\n";
+        std::cout << "3. Use Non-Preemptive Mode\n";
         std::cout << "4. Display Result\n";
         std::cout << "5. Quit\n";
         std::cout << "\nEnter Option Here --> ";
@@ -210,9 +209,9 @@ int main(int argc, char** argv) {
         switch (option) {
         case 1:
             if (mode == 0)
-                std::cout << "\n\n\nPRIMITIVE MODE\n\n";
+                std::cout << "\n\n\nPREEMPTIVE MODE\n\n";
             else if (mode == 1)
-                std::cout << "\nNON-PRIMITIVE MODE\n\n";
+                std::cout << "\nNON-PREEMPTIVE MODE\n\n";
 
             std::cout << "1. First Come First Serve Method\n";
             std::cout << "2. Shortest Job First Method\n";
